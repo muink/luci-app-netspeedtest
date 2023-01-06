@@ -1,0 +1,143 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2023 muink
+#
+
+. /lib/functions.sh
+
+START=99
+USE_PROCD=1
+
+EXTRA_COMMANDS="download_ookla ookla_verify speedtest"
+EXTRA_HELP=\
+"	download_ookla	Download Ookla Speedtest-CLI
+	ookla_verify	Verify Ookla Speedtest-CLI integrity
+	speedtest	Start Speedtest Test"
+
+#
+OOKLA_SPEEDTEST='/usr/libexec/netspeedtest/speedtest'
+SPEEDTEST_RESULT='/var/speedtest_result'
+# uci
+CONFIG_NAME='netspeedtest'
+NAMEDDSECTION='config'
+
+
+
+iperf3_instance() {
+	procd_open_instance "iperf3"
+	procd_set_param command "iperf3"
+	procd_append_param command -s
+	procd_set_param respawn
+	procd_set_param user root
+	procd_set_param stdout 1
+	procd_set_param stderr 1
+	procd_close_instance
+}
+
+librespeed_instance() {
+	local action="$1"
+
+	case "$action" in
+		start)
+			uci set librespeed-go.config.enabled='1'
+			uci commit librespeed-go
+			grep "option bind_address " /etc/config/librespeed-go >/dev/null || \
+				sed -Ei "s|(config librespeed-go 'config')|\1\n\toption bind_address ''|" \
+				/etc/config/librespeed-go
+			/etc/init.d/librespeed-go start
+		;;
+		stop)
+			uci set librespeed-go.config.enabled='0'
+			uci commit librespeed-go
+			/etc/init.d/librespeed-go stop
+		;;
+	esac
+}
+
+kill_instance() {
+	local instance="$1"
+	for i in $(ps|grep "$instance"|grep -v 'grep'|grep -v $$|awk '{print $1}'); do kill -9 "$i" 2>/dev/null; done
+}
+
+download_ookla() {
+	local url arch=$1
+	[ -z "$arch" ] && return 1
+
+	url=$( \
+		curl -sSL 'https://www.speedtest.net/apps/cli' \
+		| grep "Download for Linux" \
+		| sed 's|<|\n<|g' \
+		| sed -n '/Download for Linux/,/<\/div>/p' \
+		| sed -En "s|.*<a href=\"([^\"]+)\">${arch}|\1|p" \
+	)
+	[ -z "$url" ] && return 1
+
+	[ "$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_enabled)" == "1" ] && \
+	export ALL_PROXY=$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_protocol)://$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_server)
+
+	[ -n "$url" ] && curl -sSL $url | tar -xvz -C /tmp
+	cp -f /tmp/speedtest $OOKLA_SPEEDTEST
+	chmod +x $OOKLA_SPEEDTEST
+	ookla_verify || rm -f $OOKLA_SPEEDTEST
+	unset ALL_PROXY
+}
+
+ookla_verify() {
+	if [ -f "$OOKLA_SPEEDTEST" -a -n "$($OOKLA_SPEEDTEST --version 2>/dev/null)" ]; then
+		return 0
+	else
+		return 1
+	fi
+}
+
+speedtest() {
+	local command
+
+	if [ "$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.ookla_official)" == "1" ]; then
+		ookla_verify
+		if [ "$?" == "0" ]; then
+			command="$OOKLA_SPEEDTEST --accept-gdpr --accept-license"
+		else
+			command="speedtest --share"
+			set $CONFIG_NAME.$NAMEDDSECTION.ookla_official=0
+			commit $CONFIG_NAME
+		fi
+	else
+		command="speedtest --share"
+	fi
+
+	[ "$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_enabled)" == "1" ] && \
+	export ALL_PROXY=$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_protocol)://$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_server)
+
+	echo "Testing" > "$SPEEDTEST_RESULT"
+	local result=$(sh -c "$command | grep 'www.speedtest.net/result/' | sed -E \"s|.+(://www.speedtest.net/\S+).*|https\1|;s|(\.png)*$|.png|\"")
+	[ -n "$result" ] && echo "$result" > "$SPEEDTEST_RESULT" || echo "Test failed" > "$SPEEDTEST_RESULT"
+	unset ALL_PROXY
+}
+
+start_service() {
+	local eniperf3 enlibrespeed
+
+	config_load "$CONFIG_NAME"
+	eval "eniperf3=\$CONFIG_${NAMEDDSECTION}_iperf3_enabled"
+	eval "enlibrespeed=\$CONFIG_${NAMEDDSECTION}_librespeed_enabled"
+
+	[ "$eniperf3" == "1" ] && iperf3_instance
+	[ "${enlibrespeed:=0}" == "0" ] && librespeed_instance stop || librespeed_instance start
+}
+
+service_triggers() {
+	procd_add_reload_trigger "$CONFIG_NAME" 'librespeed-go'
+}
+
+stop_service() {
+	uci -q batch <<-EOF
+		set $CONFIG_NAME.$NAMEDDSECTION.iperf3_enabled='0'
+		set $CONFIG_NAME.$NAMEDDSECTION.librespeed_enabled='0'
+		commit $CONFIG_NAME
+	EOF
+	librespeed_instance stop
+}
+
+reload_service() {
+	start
+}

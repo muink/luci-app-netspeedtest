@@ -1,0 +1,45 @@
+{
+  "admin/network/netspeedtest": {
+    "title": "Speedtest",
+    "order": 55,
+    "action": {
+      "type": "firstchild"
+    },
+    "depends": {
+      "acl": [ "luci-app-netspeedtest" ],
+      "uci": { "netspeedtest": true }
+    }
+  },
+  "admin/network/netspeedtest/iperf3": {
+    "title": "iperf3 Server",
+    "order": 1,
+    "action": {
+      "type": "view",
+      "path": "netspeedtest/iperf3"
+    }
+  },
+  "admin/network/netspeedtest/librespeed": {
+    "title": "librespeed Server",
+    "order": 2,
+    "action": {
+      "type": "view",
+      "path": "netspeedtest/librespeed"
+    }
+  },
+  "admin/network/netspeedtest/librespeed-cfg": {
+    "title": "librespeed Config",
+    "order": 3,
+    "action": {
+      "type": "view",
+      "path": "netspeedtest/librespeed-cfg"
+    }
+  },
+  "admin/network/netspeedtest/speedtest": {
+    "title": "Ookla Speedtest",
+    "order": 4,
+    "action": {
+      "type": "view",
+      "path": "netspeedtest/speedtest"
+    }
+  }
+}
