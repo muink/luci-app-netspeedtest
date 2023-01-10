@@ -43,12 +43,12 @@ librespeed_instance() {
 			grep "option bind_address " /etc/config/librespeed-go >/dev/null || \
 				sed -Ei "s|(config librespeed-go 'config')|\1\n\toption bind_address ''|" \
 				/etc/config/librespeed-go
-			/etc/init.d/librespeed-go start
+			/etc/init.d/librespeed-go reload
 		;;
 		stop)
 			uci set librespeed-go.config.enabled='0'
 			uci commit librespeed-go
-			/etc/init.d/librespeed-go stop
+			/etc/init.d/librespeed-go reload
 		;;
 	esac
 }
