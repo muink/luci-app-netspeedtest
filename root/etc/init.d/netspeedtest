@@ -75,6 +75,7 @@ download_ookla() {
 	export ALL_PROXY=$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_protocol)://$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_server)
 
 	[ -n "$url" ] && curl -sSL $url | tar -xvz -C /tmp
+	mkdir -p ${OOKLA_SPEEDTEST%/*} 2>/dev/null
 	cp -f /tmp/speedtest $OOKLA_SPEEDTEST
 	chmod +x $OOKLA_SPEEDTEST
 	ookla_verify || rm -f $OOKLA_SPEEDTEST
