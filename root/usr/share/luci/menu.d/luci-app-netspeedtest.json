@@ -1,6 +1,6 @@
 {
   "admin/network/netspeedtest": {
-    "title": "Speedtest",
+    "title": "SpeedTest",
     "order": 55,
     "action": {
       "type": "firstchild"
@@ -35,7 +35,7 @@
     }
   },
   "admin/network/netspeedtest/speedtest": {
-    "title": "Ookla Speedtest",
+    "title": "Ookla SpeedTest",
     "order": 4,
     "action": {
       "type": "view",

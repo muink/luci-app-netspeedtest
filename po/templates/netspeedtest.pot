@@ -1,0 +1,156 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/iperf3.js:66
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:66
+msgid "Collecting data ..."
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:156
+msgid "Download"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:155
+msgid "Download Ookla® SpeedTest-CLI"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/iperf3.js:77
+msgid "Download iperf3 client"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/iperf3.js:73
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/librespeed.js:32
+msgid "Enable"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:77
+msgid "Enable HTTP2"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:81
+msgid "Enable TLS"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:121
+msgid "Enable proxy for downloader and test"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/root/usr/share/rpcd/acl.d/luci-app-netspeedtest.json:3
+msgid "Grant access to netspeedtest procedures"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:31
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:102
+msgid "Installed"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:73
+msgid "Listen Port"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:50
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:82
+msgid "No result."
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:34
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:104
+msgid "Not Installed"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/iperf3.js:78
+msgid "Official website"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:61
+#: applications/luci-app-netspeedtest/root/usr/share/luci/menu.d/luci-app-netspeedtest.json:38
+msgid "Ookla SpeedTest"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:98
+msgid "Ookla® SpeedTest-CLI Status"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:124
+msgid "Proxy Protocol"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:134
+msgid "Proxy Server"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/librespeed.js:41
+msgid ""
+"Random port (port=0) is not supported.<br />Change to a fixed port and try "
+"again."
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/iperf3.js:50
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:50
+msgid "SERVER NOT RUNNING"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/iperf3.js:48
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:48
+msgid "SERVER RUNNING"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/root/usr/share/luci/menu.d/luci-app-netspeedtest.json:3
+msgid "SpeedTest"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:89
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:90
+msgid "Start Test"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:145
+msgid "System Arch"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:87
+msgid "TLS Cert file"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:92
+msgid "TLS Key file"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:47
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:79
+msgid "Test failed."
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:40
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:70
+msgid "Testing in progress..."
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:141
+msgid "Use Ookla® SpeedTest-CLI"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/iperf3.js:60
+msgid "iperf3 Bandwidth Performance Test"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/iperf3.js:88
+msgid "iperf3 Common commands reference"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/root/usr/share/luci/menu.d/luci-app-netspeedtest.json:14
+msgid "iperf3 Server"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:60
+#: applications/luci-app-netspeedtest/root/usr/share/luci/menu.d/luci-app-netspeedtest.json:30
+msgid "librespeed Config"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/root/usr/share/luci/menu.d/luci-app-netspeedtest.json:22
+msgid "librespeed Server"
+msgstr ""
+
+#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/librespeed.js:27
+msgid "librespeed Site Speed Test"
+msgstr ""
