@@ -62,6 +62,9 @@ download_ookla() {
 	local url arch=$1
 	[ -z "$arch" ] && return 1
 
+	[ "$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_enabled)" == "1" ] && \
+	export ALL_PROXY=$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_protocol)://$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_server)
+
 	url=$( \
 		curl -sSL 'https://www.speedtest.net/apps/cli' \
 		| grep "Download for Linux" \
@@ -70,9 +73,6 @@ download_ookla() {
 		| sed -En "s|.*<a href=\"([^\"]+)\">${arch}|\1|p" \
 	)
 	[ -z "$url" ] && return 1
-
-	[ "$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_enabled)" == "1" ] && \
-	export ALL_PROXY=$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_protocol)://$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_server)
 
 	[ -n "$url" ] && curl -sSL $url | tar -xvz -C /tmp
 	mkdir -p ${OOKLA_SPEEDTEST%/*} 2>/dev/null
