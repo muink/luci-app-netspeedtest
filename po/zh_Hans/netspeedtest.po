@@ -94,7 +94,6 @@ msgstr "代理服务器"
 msgid ""
 "Random port (port=0) is not supported.<br />Change to a fixed port and try "
 "again."
-msgstr "Random port (port=0) is not supported.<br />Change to a fixed port and try again."
 msgstr "不支持随机端口 (port=0).<br />改为固定端口然后再试一次."
 
 #: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/iperf3.js:50

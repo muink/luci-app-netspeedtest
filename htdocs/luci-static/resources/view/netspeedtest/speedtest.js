@@ -41,7 +41,7 @@ return view.extend({
 				"</span>";
 			};
 			if (result[0].match(/https?:\S+/)) {
-				result_stat.innerHTML = "<span><img src='" + result[0] + "' height='300' style='vertical-align:middle'>" + "</span>";
+				result_stat.innerHTML = "<div style='max-width:500px'><img src='" + result[0] + "' style='max-width:100%;max-height:100%;vertical-align:middle'>" + "</div>";
 			};
 			if (result[0] == 'Test failed') {
 				result_stat.innerHTML = "<span style='color:red;font-weight:bold'>" + _('Test failed.') + "</span>";
@@ -71,8 +71,8 @@ return view.extend({
 					]) ])
 				};
 				if (result[0].match(/https?:\S+/)) {
-					return E('div', { 'id': 'speedtest_result' }, [ E('span', {}, [
-						E('img', { 'src': result[0], 'height': '300', 'style': 'vertical-align:middle' }, [])
+					return E('div', { 'id': 'speedtest_result' }, [ E('div', { 'style': 'max-width:500px' }, [
+						E('img', { 'src': result[0], 'style': 'max-width:100%;max-height:100%;vertical-align:middle' }, [])
 					]) ])
 				};
 				if (result[0] == 'Test failed') {
