@@ -27,7 +27,7 @@ iperf3_instance() {
 	procd_set_param command "iperf3"
 	procd_append_param command -s
 	procd_set_param respawn
-	procd_set_param user root
+	procd_set_param user nobody
 	procd_set_param stdout 1
 	procd_set_param stderr 1
 	procd_close_instance
@@ -66,7 +66,7 @@ download_ookla() {
 	export ALL_PROXY=$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_protocol)://$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_server)
 
 	url=$( \
-		curl -sSL 'https://www.speedtest.net/apps/cli' \
+		curl --connect-timeout 10 --retry 3 -sSL 'https://www.speedtest.net/apps/cli' \
 		| grep "Download for Linux" \
 		| sed 's|<|\n<|g' \
 		| sed -n '/Download for Linux/,/<\/div>/p' \
@@ -96,7 +96,7 @@ speedtest() {
 	if [ "$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.ookla_official)" == "1" ]; then
 		ookla_verify
 		if [ "$?" == "0" ]; then
-			command="$OOKLA_SPEEDTEST --accept-gdpr --accept-license"
+			command="$OOKLA_SPEEDTEST --accept-gdpr --accept-license --progress=no"
 		else
 			command="speedtest --share"
 			set $CONFIG_NAME.$NAMEDDSECTION.ookla_official=0
