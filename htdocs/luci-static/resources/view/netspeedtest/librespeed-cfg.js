@@ -71,6 +71,7 @@ return view.extend({
 		s.anonymous = true;
 
 		o = s.option(form.Value, 'listen_port', _('Listen Port'));
+		o.datatype = 'port';
 		o.default = 8989;
 		o.rmempty = false;
 
