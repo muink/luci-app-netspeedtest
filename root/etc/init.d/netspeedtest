@@ -139,6 +139,6 @@ stop_service() {
 	librespeed_instance stop
 }
 
-reload_service() {
+restart() {
 	start
 }
