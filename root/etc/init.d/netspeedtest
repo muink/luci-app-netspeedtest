@@ -99,8 +99,8 @@ speedtest() {
 			command="$OOKLA_SPEEDTEST --accept-gdpr --accept-license --progress=no"
 		else
 			command="speedtest --share"
-			set $CONFIG_NAME.$NAMEDDSECTION.ookla_official=0
-			commit $CONFIG_NAME
+			uci set $CONFIG_NAME.$NAMEDDSECTION.ookla_official=0
+			uci commit $CONFIG_NAME
 		fi
 	else
 		command="speedtest --share"
@@ -127,7 +127,7 @@ start_service() {
 }
 
 service_triggers() {
-	procd_add_reload_trigger "$CONFIG_NAME" 'librespeed-go'
+	procd_add_reload_trigger "$CONFIG_NAME" 'librespeed-go' 'network'
 }
 
 stop_service() {
