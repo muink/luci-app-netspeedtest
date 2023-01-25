@@ -157,7 +157,7 @@ return view.extend({
 		o.inputstyle = 'apply';
 		o.depends('ookla_official', '1');
 		o.onclick = L.bind(function(ev, section_id) {
-			var arch=document.getElementById('widget.' + o.cbid(section_id).match(/.+\./) + '_arch').value;
+			var arch=document.getElementById('widget.' + this.cbid(section_id).match(/.+\./) + '_arch').value;
 			//alert(arch);
 			return fs.exec('/etc/init.d/netspeedtest', ['download_ookla', arch])
 				.catch(function(e) { ui.addNotification(null, E('p', e.message), 'error') });
