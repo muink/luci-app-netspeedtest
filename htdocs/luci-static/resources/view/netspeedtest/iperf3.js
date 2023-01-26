@@ -84,7 +84,7 @@ return view.extend({
 		s = m.section(form.TypedSection, '_cmd_ref');
 		s.anonymous = true;
 		s.render = function (section_id) {
-			return E([
+			return E('div', { 'class': 'cbi-section' }, [
 				E('h3', {}, _('iperf3 Common commands reference')),
 				E('pre', {}, [
 "	-c, --client <host>\n\
