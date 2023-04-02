@@ -9,6 +9,12 @@
 
 ### How to install
 
+#### Prerequisites
+
+This package depends on python3-speedtest-cli which in turn depends on python3-base and various other python3 libraries. These packages combined can take up a lot of space on a router so before installing luci-app-netspeedtest, make sure you have enough space to install python3-speedtest-cli. You can check this by searching for python3-speedtest-cli under the software page in LuCI and try to install it, it will tell you how much space it and its dependencies require, just compare that to how much space you have left.
+
+#### Installation
+
 1. Goto [releases](https://github.com/muink/luci-app-netspeedtest/tree/releases)
 2. Download the latest version of ipk
 3. Login router and goto **System --> Software**
