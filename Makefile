@@ -6,7 +6,7 @@
 include $(TOPDIR)/rules.mk
 
 LUCI_NAME:=luci-app-netspeedtest
-PKG_VERSION:=20230125
+PKG_VERSION:=20230412
 
 LUCI_TITLE:=LuCI Net Speedtest
 LUCI_DEPENDS:=+iperf3 +librespeed-go +python3-speedtest-cli +ca-certificates
@@ -18,12 +18,6 @@ define Package/$(LUCI_NAME)/conffiles
 endef
 
 define Package/$(LUCI_NAME)/postinst
-#!/bin/sh
-touch /etc/config/netspeedtest
-uci -q batch <<-EOF >/dev/null
-	set netspeedtest.config=netspeedtest
-	commit netspeedtest
-EOF
 endef
 
 define Package/$(LUCI_NAME)/prerm
