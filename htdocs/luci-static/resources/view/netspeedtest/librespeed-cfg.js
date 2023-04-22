@@ -86,11 +86,13 @@ return view.extend({
 		o.retain = true;
 
 		o = s.option(form.Value, 'tls_cert_file', _('TLS Cert file'));
+		o.placeholder = '/etc/librespeed-go/cert.pem';
 		o.default = '/etc/librespeed-go/cert.pem';
 		o.rmempty = true;
 		o.depends('enable_tls', '1');
 
 		o = s.option(form.Value, 'tls_key_file', _('TLS Key file'));
+		o.placeholder = '/etc/librespeed-go/privkey.pem';
 		o.default = '/etc/librespeed-go/privkey.pem';
 		o.rmempty = true;
 		o.depends('enable_tls', '1');
