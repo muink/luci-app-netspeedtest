@@ -6,7 +6,7 @@
 include $(TOPDIR)/rules.mk
 
 LUCI_NAME:=luci-app-netspeedtest
-PKG_VERSION:=20230425
+PKG_VERSION:=20230426
 
 LUCI_TITLE:=LuCI Net Speedtest
 LUCI_DEPENDS:=+iperf3 +librespeed-go +python3-speedtest-cli +ca-certificates

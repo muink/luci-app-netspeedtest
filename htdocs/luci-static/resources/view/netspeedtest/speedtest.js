@@ -41,7 +41,7 @@ return view.extend({
 				"</span>";
 			};
 			if (result[0].match(/https?:\S+/)) {
-				result_stat.innerHTML = "<div style='max-width:500px'><img src='" + result[0] + "' style='max-width:100%;max-height:100%;vertical-align:middle'>" + "</div>";
+				result_stat.innerHTML = "<div style='max-width:500px'><a href='" + result[0] + "' target='_blank'><img src='" + result[0] + '.png' + "' style='max-width:100%;max-height:100%;vertical-align:middle'></a></div>";
 			};
 			if (result[0] == 'Test failed') {
 				result_stat.innerHTML = "<span style='color:red;font-weight:bold'>" + _('Test failed.') + "</span>";
