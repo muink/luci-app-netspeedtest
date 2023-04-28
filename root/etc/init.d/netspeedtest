@@ -74,7 +74,7 @@ download_ookla() {
 	[ -n "$url" ] && curl -sSL $url | tar -xvz -C /tmp
 	mkdir -p ${OOKLA_SPEEDTEST%/*} 2>/dev/null
 	cp -f /tmp/speedtest $OOKLA_SPEEDTEST
-	chmod +x $OOKLA_SPEEDTEST
+	chmod 755 $OOKLA_SPEEDTEST
 	ookla_verify || rm -f $OOKLA_SPEEDTEST
 	unset ALL_PROXY
 }
@@ -88,19 +88,16 @@ ookla_verify() {
 }
 
 speedtest() {
-	local command
+	local command="speedtest --share"
 
 	if [ "$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.ookla_official)" == "1" ]; then
 		ookla_verify
 		if [ "$?" == "0" ]; then
 			command="$OOKLA_SPEEDTEST --accept-gdpr --accept-license --progress=no"
 		else
-			command="speedtest --share"
 			uci set $CONFIG_NAME.$NAMEDDSECTION.ookla_official=0
 			uci commit $CONFIG_NAME
 		fi
-	else
-		command="speedtest --share"
 	fi
 
 	[ -n "$(ps|grep "$command"|grep -v grep|grep -v $$)" ] && return 1

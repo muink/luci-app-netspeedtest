@@ -72,8 +72,9 @@ return view.extend({
 				};
 				if (result[0].match(/https?:\S+/)) {
 					return E('div', { 'id': 'speedtest_result' }, [ E('div', { 'style': 'max-width:500px' }, [
-						E('img', { 'src': result[0], 'style': 'max-width:100%;max-height:100%;vertical-align:middle' }, [])
-					]) ])
+						E('a', { 'href': result[0], 'target': '_blank' }, [
+							E('img', { 'src': result[0] + '.png', 'style': 'max-width:100%;max-height:100%;vertical-align:middle' }, [])
+					]) ]) ])
 				};
 				if (result[0] == 'Test failed') {
 					return E('div', { 'id': 'speedtest_result' }, [ E('span', { 'style': 'color:red;font-weight:bold' }, [ _('Test failed.') ]) ])
@@ -89,8 +90,14 @@ return view.extend({
 		o = s.option(form.Button, '_start', _('Start Test'));
 		o.inputtitle = _('Start Test');
 		o.inputstyle = 'apply';
+		if (result.length && result[0] == 'Testing')
+			o.readonly = true;
 		o.onclick = function() {
-			L.env.rpctimeout = 180; // 3 minutes
+			//L.env.rpctimeout = 180; // 3 minutes
+			window.setTimeout(function() {
+				window.location = window.location.href.split('#')[0];
+			}, L.env.apply_display * 500);
+
 			return fs.exec('/etc/init.d/netspeedtest', ['speedtest'])
 				.catch(function(e) { ui.addNotification(null, E('p', e.message), 'error') });
 		};
@@ -161,7 +168,7 @@ return view.extend({
 			//alert(arch);
 			return fs.exec('/etc/init.d/netspeedtest', ['download_ookla', arch])
 				.catch(function(e) { ui.addNotification(null, E('p', e.message), 'error') });
-		}, this)
+		}, o)
 
 		return m.render()
 		.then(L.bind(function(m, nodes) {
