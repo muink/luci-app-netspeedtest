@@ -23,7 +23,7 @@ return view.extend({
 
 	poll_status: function(nodes, res) {
 		var has_ookla = res[0].path,
-			result = res[1] ? res[1].trim().split("\n") : [];
+			result_content = res[1] ? res[1].trim().split("\n") : [];
 		var ookla_stat = nodes.querySelector('#ookla_status'),
 			result_stat = nodes.querySelector('#speedtest_result');
 		if (has_ookla) {
@@ -33,17 +33,17 @@ return view.extend({
 			ookla_stat.style.color = 'red';
 			dom.content(ookla_stat, [ _('Not Installed') ]);
 		};
-		if (result.length) {
-			if (result[0] == 'Testing') {
+		if (result_content.length) {
+			if (result_content[0] == 'Testing') {
 				result_stat.innerHTML = "<span style='color:yellow;font-weight:bold'>" +
 					"<img src='" + L.resource(['icons/loading.gif']) + "' height='20' style='vertical-align:middle'>" +
 					_('Testing in progress...') +
 				"</span>";
 			};
-			if (result[0].match(/https?:\S+/)) {
-				result_stat.innerHTML = "<div style='max-width:500px'><a href='" + result[0] + "' target='_blank'><img src='" + result[0] + '.png' + "' style='max-width:100%;max-height:100%;vertical-align:middle'></a></div>";
+			if (result_content[0].match(/https?:\S+/)) {
+				result_stat.innerHTML = "<div style='max-width:500px'><a href='" + result_content[0] + "' target='_blank'><img src='" + result_content[0] + '.png' + "' style='max-width:100%;max-height:100%;vertical-align:middle'></a></div>";
 			};
-			if (result[0] == 'Test failed') {
+			if (result_content[0] == 'Test failed') {
 				result_stat.innerHTML = "<span style='color:red;font-weight:bold'>" + _('Test failed.') + "</span>";
 			}
 		} else {
@@ -54,7 +54,7 @@ return view.extend({
 
 	render: function(res) {
 		var has_ookla = res[0].path,
-			result = res[1] ? res[1].trim().split("\n") : [];
+			result_content = res[1] ? res[1].trim().split("\n") : [];
 
 		var m, s, o;
 
@@ -63,20 +63,20 @@ return view.extend({
 		s = m.section(form.TypedSection, '_result');
 		s.anonymous = true;
 		s.render = function (section_id) {
-			if (result.length) {
-				if (result[0] == 'Testing') {
+			if (result_content.length) {
+				if (result_content[0] == 'Testing') {
 					return E('div', { 'id': 'speedtest_result' }, [ E('span', { 'style': 'color:yellow;font-weight:bold' }, [
 						E('img', { 'src': L.resource(['icons/loading.gif']), 'height': '20', 'style': 'vertical-align:middle' }, []),
 						_('Testing in progress...')
 					]) ])
 				};
-				if (result[0].match(/https?:\S+/)) {
+				if (result_content[0].match(/https?:\S+/)) {
 					return E('div', { 'id': 'speedtest_result' }, [ E('div', { 'style': 'max-width:500px' }, [
-						E('a', { 'href': result[0], 'target': '_blank' }, [
-							E('img', { 'src': result[0] + '.png', 'style': 'max-width:100%;max-height:100%;vertical-align:middle' }, [])
+						E('a', { 'href': result_content[0], 'target': '_blank' }, [
+							E('img', { 'src': result_content[0] + '.png', 'style': 'max-width:100%;max-height:100%;vertical-align:middle' }, [])
 					]) ]) ])
 				};
-				if (result[0] == 'Test failed') {
+				if (result_content[0] == 'Test failed') {
 					return E('div', { 'id': 'speedtest_result' }, [ E('span', { 'style': 'color:red;font-weight:bold' }, [ _('Test failed.') ]) ])
 				}
 			} else {
@@ -90,7 +90,7 @@ return view.extend({
 		o = s.option(form.Button, '_start', _('Start Test'));
 		o.inputtitle = _('Start Test');
 		o.inputstyle = 'apply';
-		if (result.length && result[0] == 'Testing')
+		if (result_content.length && result_content[0] == 'Testing')
 			o.readonly = true;
 		o.onclick = function() {
 			//L.env.rpctimeout = 180; // 3 minutes
