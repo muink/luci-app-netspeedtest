@@ -140,15 +140,15 @@ return view.extend({
 		o.value('socks5h', 'SOCKS5H');
 		o.default = 'socks5';
 		o.rmempty = false;
-		o.depends('proxy_enabled', '1');
 		o.retain = true;
+		o.depends('proxy_enabled', '1');
 
 		o = s.option(form.Value, 'proxy_server', _('Proxy Server'));
 		o.datatype = "ipaddrport(1)";
 		o.placeholder = '192.168.1.10:1080';
 		o.rmempty = false;
-		o.depends('proxy_enabled', '1');
 		o.retain = true;
+		o.depends('proxy_enabled', '1');
 
 		o = s.option(form.Flag, 'ookla_official', _('Use Ookla® SpeedTest-CLI'));
 		o.default = o.disabled;

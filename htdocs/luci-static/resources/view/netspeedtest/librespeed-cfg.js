@@ -82,19 +82,19 @@ return view.extend({
 		o = s.option(form.Flag, 'enable_tls', _('Enable TLS'));
 		o.default = o.disabled;
 		o.rmempty = false;
-		o.depends('enable_http2', '1');
 		o.retain = true;
+		o.depends('enable_http2', '1');
 
 		o = s.option(form.Value, 'tls_cert_file', _('TLS Cert file'));
 		o.placeholder = '/etc/librespeed-go/cert.pem';
-		o.default = '/etc/librespeed-go/cert.pem';
-		o.rmempty = true;
+		o.rmempty = false;
+		o.retain = true;
 		o.depends('enable_tls', '1');
 
 		o = s.option(form.Value, 'tls_key_file', _('TLS Key file'));
 		o.placeholder = '/etc/librespeed-go/privkey.pem';
-		o.default = '/etc/librespeed-go/privkey.pem';
-		o.rmempty = true;
+		o.rmempty = false;
+		o.retain = true;
 		o.depends('enable_tls', '1');
 
 		return m.render()
