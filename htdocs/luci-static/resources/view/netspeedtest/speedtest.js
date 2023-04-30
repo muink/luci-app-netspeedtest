@@ -8,6 +8,8 @@
 'require ui';
 'require form';
 
+var TestTimeout = 240 * 1000; // 4 Minutes
+
 return view.extend({
 //	handleSaveApply: null,
 //	handleSave: null,
@@ -17,6 +19,7 @@ return view.extend({
 	return Promise.all([
 		L.resolveDefault(fs.stat('/usr/libexec/netspeedtest/speedtest'), {}),
 		L.resolveDefault(fs.read('/var/speedtest_result'), null),
+		L.resolveDefault(fs.stat('/var/speedtest_result'), {}),
 		uci.load('netspeedtest')
 	]);
 	},
@@ -54,7 +57,9 @@ return view.extend({
 
 	render: function(res) {
 		var has_ookla = res[0].path,
-			result_content = res[1] ? res[1].trim().split("\n") : [];
+			result_content = res[1] ? res[1].trim().split("\n") : [],
+			result_mtime = res[2] ? res[2].mtime * 1000 : 0,
+			date = new Date();
 
 		var m, s, o;
 
@@ -90,7 +95,7 @@ return view.extend({
 		o = s.option(form.Button, '_start', _('Start Test'));
 		o.inputtitle = _('Start Test');
 		o.inputstyle = 'apply';
-		if (result_content.length && result_content[0] == 'Testing')
+		if (result_content.length && result_content[0] == 'Testing' && (date.getTime() - result_mtime) < TestTimeout)
 			o.readonly = true;
 		o.onclick = function() {
 			//L.env.rpctimeout = 180; // 3 minutes
