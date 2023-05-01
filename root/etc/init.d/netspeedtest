@@ -106,7 +106,7 @@ speedtest() {
 	export ALL_PROXY=$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_protocol)://$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_server)
 
 	echo "Testing" > "$SPEEDTEST_RESULT"
-	local result=$(sh -c "$command | grep 'www.speedtest.net/result/' | sed -E \"s|.+(://www.speedtest.net/\S+).*|https\1|;s|(\.png)$||\"")
+	local result=$($command | grep 'www.speedtest.net/result/' | sed -E 's|.+(://www.speedtest.net/\S+).*|https\1|;s|(\.png)$||')
 	[ -n "$result" ] && echo "$result" > "$SPEEDTEST_RESULT" || echo "Test failed" > "$SPEEDTEST_RESULT"
 }
 
