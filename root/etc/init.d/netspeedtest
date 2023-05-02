@@ -52,7 +52,7 @@ librespeed_instance() {
 
 kill_instance() {
 	local instance="$1"
-	for i in $(ps|grep "$instance"|grep -v 'grep'|grep -v $$|awk '{print $1}'); do kill -9 "$i" 2>/dev/null; done
+	pgrep -f "$instance" | xargs kill -9 
 }
 
 download_ookla() {
@@ -100,7 +100,7 @@ speedtest() {
 		fi
 	fi
 
-	[ -n "$(ps|grep "$command"|grep -v grep|grep -v $$)" ] && return 1
+	[ -n "$(pgrep -f "$command")" ] && return 1
 
 	[ "$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_enabled)" == "1" ] && \
 	export ALL_PROXY=$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_protocol)://$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_server)
