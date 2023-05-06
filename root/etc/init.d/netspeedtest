@@ -52,7 +52,8 @@ librespeed_instance() {
 
 kill_instance() {
 	local instance="$1"
-	pgrep -f "$instance" | xargs kill -9 
+	pgrep -f "$instance" | xargs kill -9 >/dev/null 2>&1
+	return 0
 }
 
 download_ookla() {
