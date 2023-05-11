@@ -15,7 +15,7 @@ This package depends on python3-speedtest-cli which in turn depends on python3-b
 
 #### Installation
 
-1. Goto [releases](https://github.com/muink/luci-app-netspeedtest/tree/releases)
+1. Goto ~~[releases](https://github.com/muink/luci-app-netspeedtest/tree/releases)~~ [here](https://fantastic-packages.github.io/packages/)
 2. Download the latest version of ipk
 3. Login router and goto **System --> Software**
 4. Upload and install ipk
