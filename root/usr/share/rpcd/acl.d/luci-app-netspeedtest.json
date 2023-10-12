@@ -4,6 +4,7 @@
     "read": {
       "file": {
         "/etc/init.d/netspeedtest": [ "exec" ],
+        "/usr/lib/netspeedtest/speedtest": [ "exec" ],
         "/var/speedtest_result": [ "read" ]
       },
       "ubus": {

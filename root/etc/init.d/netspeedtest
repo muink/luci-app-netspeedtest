@@ -7,15 +7,13 @@
 START=99
 USE_PROCD=1
 
-EXTRA_COMMANDS="download_ookla ookla_verify speedtest"
+EXTRA_COMMANDS="download_ookla ookla_verify"
 EXTRA_HELP=\
 "	download_ookla	Download Ookla Speedtest-CLI
-	ookla_verify	Verify Ookla Speedtest-CLI integrity
-	speedtest	Start Speedtest Test"
+	ookla_verify	Verify Ookla Speedtest-CLI integrity"
 
 #
 OOKLA_SPEEDTEST='/usr/libexec/netspeedtest/speedtest'
-SPEEDTEST_RESULT='/var/speedtest_result'
 # uci
 CONFIG_NAME='netspeedtest'
 NAMEDDSECTION='config'
@@ -86,29 +84,6 @@ ookla_verify() {
 	else
 		return 1
 	fi
-}
-
-speedtest() {
-	local command="speedtest --share"
-
-	if [ "$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.ookla_official)" == "1" ]; then
-		ookla_verify
-		if [ "$?" == "0" ]; then
-			command="$OOKLA_SPEEDTEST --accept-gdpr --accept-license --progress=no"
-		else
-			uci set $CONFIG_NAME.$NAMEDDSECTION.ookla_official=0
-			uci commit $CONFIG_NAME
-		fi
-	fi
-
-	[ -n "$(pgrep -f "$command")" ] && return 1
-
-	[ "$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_enabled)" == "1" ] && \
-	export ALL_PROXY=$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_protocol)://$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_server)
-
-	echo "Testing" > "$SPEEDTEST_RESULT"
-	local result=$($command | grep 'www.speedtest.net/result/' | sed -E 's|.+(://www.speedtest.net/\S+).*|https\1|;s|(\.png)$||')
-	[ -n "$result" ] && echo "$result" > "$SPEEDTEST_RESULT" || echo "Test failed" > "$SPEEDTEST_RESULT"
 }
 
 start_service() {
