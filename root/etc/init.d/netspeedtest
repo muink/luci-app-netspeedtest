@@ -79,7 +79,7 @@ download_ookla() {
 }
 
 ookla_verify() {
-	if [ -f "$OOKLA_SPEEDTEST" -a -n "$($OOKLA_SPEEDTEST --version 2>/dev/null)" ]; then
+	if [ -x "$OOKLA_SPEEDTEST" ]; then
 		return 0
 	else
 		return 1
