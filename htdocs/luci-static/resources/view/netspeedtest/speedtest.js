@@ -98,12 +98,8 @@ return view.extend({
 		if (result_content.length && result_content[0] == 'Testing' && (date.getTime() - result_mtime) < TestTimeout)
 			o.readonly = true;
 		o.onclick = function() {
-			//L.env.rpctimeout = 180; // 3 minutes
-			window.setTimeout(function() {
-				window.location = window.location.href.split('#')[0];
-			}, L.env.apply_display * 500);
-
 			return fs.exec_direct('/usr/lib/netspeedtest/speedtest')
+				.then(function(res) { return window.location = window.location.href.split('#')[0] })
 				.catch(function(e) { ui.addNotification(null, E('p', e.message), 'error') });
 		};
 
