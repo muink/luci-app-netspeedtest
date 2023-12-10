@@ -10,12 +10,10 @@
       "ubus": {
         "service": [ "list" ]
       },
-      "uci": [ "netspeedtest" ],
-      "uci": [ "librespeed-go" ]
+      "uci": [ "netspeedtest", "librespeed-go" ]
     },
     "write": {
-      "uci": [ "netspeedtest" ],
-      "uci": [ "librespeed-go" ]
+      "uci": [ "netspeedtest", "librespeed-go" ]
     }
   }
 }
