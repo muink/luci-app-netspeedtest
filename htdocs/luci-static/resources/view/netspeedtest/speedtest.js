@@ -97,11 +97,18 @@ return view.extend({
 		o.inputstyle = 'apply';
 		if (result_content.length && result_content[0] == 'Testing' && (date.getTime() - result_mtime) < TestTimeout)
 			o.readonly = true;
-		o.onclick = function() {
-			return fs.exec_direct('/usr/lib/netspeedtest/speedtest')
-				.then(function(res) { return window.location = window.location.href.split('#')[0] })
-				.catch(function(e) { ui.addNotification(null, E('p', e.message), 'error') });
-		};
+		o.onclick = L.bind(function(ev, section_id) {
+			var ookla_official=uci.get('netspeedtest', section_id, 'ookla_official') || '0'
+			if (ookla_official === '1') {
+				return fs.exec('/usr/lib/netspeedtest/speedtest')
+					.then(function(res) { return window.location = window.location.href.split('#')[0] })
+					.catch(function(e) { ui.addNotification(null, E('p', e.message), 'error') });
+			} else {
+				return fs.exec_direct('/usr/lib/netspeedtest/speedtest')
+					.then(function(res) { return window.location = window.location.href.split('#')[0] })
+					.catch(function(e) { ui.addNotification(null, E('p', e.message), 'error') });
+			}
+		}, o);
 
 		o = s.option(form.DummyValue, '_ookla_status', _('Ookla® SpeedTest-CLI Status'));
 		o.rawhtml = true;
