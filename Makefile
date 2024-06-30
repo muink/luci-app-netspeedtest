@@ -13,6 +13,8 @@ LUCI_DEPENDS:=+iperf3 +librespeed-go +python3-speedtest-cli +ca-certificates
 
 LUCI_DESCRIPTION:=Test Net speed
 
+PKG_UNPACK=$(CURDIR)/.prepare.sh $(PKG_NAME) $(CURDIR) $(PKG_BUILD_DIR)
+
 define Package/$(LUCI_NAME)/conffiles
 /etc/config/netspeedtest
 endef
