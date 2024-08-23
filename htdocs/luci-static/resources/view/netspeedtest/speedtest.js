@@ -171,12 +171,12 @@ return view.extend({
 		o.inputtitle = _('Download');
 		o.inputstyle = 'apply';
 		o.depends('ookla_official', '1');
-		o.onclick = L.bind(function(ev, section_id) {
-			var arch=document.getElementById('widget.' + this.cbid(section_id).match(/.+\./) + '_arch').value;
+		o.onclick = function(ev, section_id) {
+			var arch=this.section.getOption('_arch').formvalue(section_id);
 			//alert(arch);
 			return fs.exec_direct('/etc/init.d/netspeedtest', ['download_ookla', arch])
 				.catch(function(e) { ui.addNotification(null, E('p', e.message), 'error') });
-		}, o)
+		}
 
 		return m.render()
 		.then(L.bind(function(m, nodes) {
