@@ -9,18 +9,9 @@ CONFIG_NAME='netspeedtest'
 NAMEDDSECTION='config'
 
 
-command="speedtest --share"
-if [ "$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.ookla_official)" == "1" ]; then
-	$INIT_SCRIPT ookla_verify
-	if [ "$?" == "0" ]; then
-		command="$OOKLA_SPEEDTEST --accept-gdpr --accept-license --progress=no"
-	else
-		uci set $CONFIG_NAME.$NAMEDDSECTION.ookla_official=0
-		uci commit $CONFIG_NAME
-	fi
-fi
+command="$OOKLA_SPEEDTEST --accept-gdpr --accept-license --progress=no"
 
-[ -n "$(pgrep -f "$command")" ] && return 1
+! pgrep -f "$command" >/dev/null || return 1
 
 [ "$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_enabled)" == "1" ] && \
 export ALL_PROXY=$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_protocol)://$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_server)
