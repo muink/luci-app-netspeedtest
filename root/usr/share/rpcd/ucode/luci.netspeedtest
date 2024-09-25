@@ -1,0 +1,62 @@
+#!/usr/bin/ucode
+/* Copyright (C) 2024 Anya Lin */
+
+'use strict';
+
+import { popen, writefile } from 'fs';
+import { cursor } from 'uci';
+
+const uci = cursor();
+
+// uci
+const CONFIG = 'netspeedtest';
+const NAMEDDSECTION = 'config';
+
+// netspeedtest
+const OOKLA_SPEEDTEST = '/usr/libexec/netspeedtest/speedtest';
+const INIT_SCRIPT = '/etc/init.d/netspeedtest';
+const SPEEDTEST_RESULT = '/var/speedtest_result';
+
+const methods = {
+	speedtest: {
+		call: function() {
+			let command = 'speedtest --share';
+			let exitcode = 0;
+
+			uci.load(CONFIG);
+			if (uci.get(CONFIG, NAMEDDSECTION, 'ookla_official') === '1') {
+				exitcode = system(`${INIT_SCRIPT} ookla_verify`);
+				if (exitcode === 0) {
+					command = OOKLA_SPEEDTEST + ' --accept-gdpr --accept-license --progress=no';
+				} else {
+					uci.set(CONFIG, NAMEDDSECTION, 'ookla_official', '0');
+					uci.commit(CONFIG);
+				}
+			}
+
+			exitcode = system(`pgrep -f "${command}"`);
+			if (exitcode === 0)
+				return { result: false, error: 'test in progress' };
+
+			writefile(SPEEDTEST_RESULT, 'Testing');
+
+			let result;
+			const fd = popen(command + " | grep 'www.speedtest.net/result/' | sed -E 's|.+(://www.speedtest.net/\\S+).*|https\\1|;s|(\\.png)\$||'");
+			if (fd) {
+				result = trim(fd.read('all'));
+
+				fd.close();
+			}
+
+			if (result) {
+				writefile(SPEEDTEST_RESULT, result);
+				return { result: result };
+			} else {
+				writefile(SPEEDTEST_RESULT, 'Test failed');
+				return { result: '-1' };
+			}
+		}
+	}
+};
+
+return { 'luci.netspeedtest': methods };

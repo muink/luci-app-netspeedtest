@@ -10,6 +10,12 @@
 
 var TestTimeout = 240 * 1000; // 4 Minutes
 
+var callSpeedtest = rpc.declare({
+	object: 'luci.netspeedtest',
+	method: 'speedtest',
+	expect: { '': {} }
+});
+
 return view.extend({
 //	handleSaveApply: null,
 //	handleSave: null,
@@ -97,18 +103,11 @@ return view.extend({
 		o.inputstyle = 'apply';
 		if (result_content.length && result_content[0] == 'Testing' && (date.getTime() - result_mtime) < TestTimeout)
 			o.readonly = true;
-		o.onclick = L.bind(function(ev, section_id) {
-			var ookla_official=uci.get('netspeedtest', section_id, 'ookla_official') || '0'
-			if (ookla_official === '1') {
-				return fs.exec('/usr/lib/netspeedtest/speedtest')
-					.then(function(res) { return window.location = window.location.href.split('#')[0] })
-					.catch(function(e) { ui.addNotification(null, E('p', e.message), 'error') });
-			} else {
-				return fs.exec_direct('/usr/lib/netspeedtest/speedtest')
-					.then(function(res) { return window.location = window.location.href.split('#')[0] })
-					.catch(function(e) { ui.addNotification(null, E('p', e.message), 'error') });
-			}
-		}, o);
+		o.onclick = function(ev, section_id) {
+			return callSpeedtest().then((res) => {
+				return window.location = window.location.href.split('#')[0];
+			});
+		};
 
 		o = s.option(form.DummyValue, '_ookla_status', _('Ookla® SpeedTest-CLI Status'));
 		o.rawhtml = true;
@@ -119,39 +118,6 @@ return view.extend({
 				return E('span', { 'id': 'ookla_status', 'style': 'color:red;font-weight:bold' }, [ _('Not Installed') ]);
 			}
 		};
-
-		//o = s.option(form.Button, '_ookla_status', _('Ookla® SpeedTest-CLI Status'));
-		//o.inputtitle = _('Not Installed');
-		//o.inputstyle = 'null';
-		//o.readonly = true;
-		//o.onclick = function() {};
-		//o.inputtitle = function() {
-		//	if (has_ookla) {
-		//		return _('Installed')
-		//	} else {
-		//		return _('Not Installed')
-		//	}
-		//};
-
-		o = s.option(form.Flag, 'proxy_enabled', _('Enable proxy for downloader and test'));
-		o.rmempty = false;
-
-		o = s.option(form.ListValue, 'proxy_protocol', _('Proxy Protocol'));
-		o.value('http', 'HTTP');
-		o.value('https', 'HTTPS');
-		o.value('socks5', 'SOCKS5');
-		o.value('socks5h', 'SOCKS5H');
-		o.default = 'socks5';
-		o.rmempty = false;
-		o.retain = true;
-		o.depends('proxy_enabled', '1');
-
-		o = s.option(form.Value, 'proxy_server', _('Proxy Server'));
-		o.datatype = "ipaddrport(1)";
-		o.placeholder = '192.168.1.10:1080';
-		o.rmempty = false;
-		o.retain = true;
-		o.depends('proxy_enabled', '1');
 
 		o = s.option(form.Flag, 'ookla_official', _('Use Ookla® SpeedTest-CLI'));
 		o.default = o.disabled;
