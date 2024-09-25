@@ -4,11 +4,12 @@
     "read": {
       "file": {
         "/etc/init.d/netspeedtest": [ "exec" ],
-        "/usr/lib/netspeedtest/speedtest": [ "exec" ],
-        "/var/speedtest_result": [ "read" ]
+        "/var/speedtest_result": [ "read" ],
+        "ubus call luci.netspeedtest speedtest": [ "exec" ]
       },
       "ubus": {
-        "service": [ "list" ]
+        "service": [ "list" ],
+        "luci.netspeedtest": [ "*" ]
       },
       "uci": [ "netspeedtest", "librespeed-go" ]
     },

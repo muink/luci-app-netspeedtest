@@ -1,0 +1,119 @@
+#!/usr/bin/ucode
+/* Copyright (C) 2024 Anya Lin */
+
+'use strict';
+
+import { popen, writefile } from 'fs';
+import { cursor } from 'uci';
+
+const uci = cursor();
+
+// uci
+const CONFIG = 'netspeedtest';
+const NAMEDDSECTION = 'config';
+
+// netspeedtest
+const OOKLA_SPEEDTEST = '/usr/libexec/netspeedtest/speedtest';
+const SPEEDTEST_RESULT = '/var/speedtest_result';
+
+function ookla_verify() {
+	let exitcode = system(`${OOKLA_SPEEDTEST} --help`);
+
+	if (exitcode === 0)
+		return true;
+	else
+		return false;
+}
+
+const methods = {
+	download_ookla: {
+		args: { arch: 'arch' },
+		call: function(req) {
+			if (!req.args?.arch)
+				return { result: false, error: 'illegal arch' };
+
+			const ARCH = req.args?.arch;
+
+			let ALL_PROXY;
+			uci.load(CONFIG);
+			if (uci.get(CONFIG, NAMEDDSECTION, 'proxy_enabled') === '1')
+				ALL_PROXY = `${uci.get(CONFIG, NAMEDDSECTION, 'proxy_protocol')}://${uci.get(CONFIG, NAMEDDSECTION, 'proxy_server')}`;
+
+			const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36';
+
+			const command = `curl --connect-timeout 10 --retry 3 -sSL 'https://www.speedtest.net/apps/cli' ` +
+				(ALL_PROXY ? `--proxy ${ALL_PROXY} ` : ' ') +
+				`--user-agent "${UA}" ` +
+				`| grep "Download for Linux" ` +
+				`| sed 's|<|\\n<|g' ` +
+				`| sed -n '/Download for Linux/,/<\\/div>/p' ` +
+				`| sed -En "s|.*<a href=\\"([^\\"]+)\\">${ARCH}|\\1|p"`;
+
+			let url;
+			const fd = popen(command);
+			if (fd) {
+				url = trim(fd.read('all'));
+
+				fd.close();
+			}
+			if (url) {
+				system(`curl -sSL --url "${url}" ${ALL_PROXY} --user-agent "${UA}" | tar -xvz -C /tmp`);
+				system(`OOKLA_SPEEDTEST="${OOKLA_SPEEDTEST}"; mkdir -p \${OOKLA_SPEEDTEST%/*} 2>/dev/null`);
+				system(`cp -f /tmp/speedtest ${OOKLA_SPEEDTEST}`);
+				system(`chmod 755 ${OOKLA_SPEEDTEST}`);
+				if (ookla_verify())
+					return { result: true };
+				else {
+					system(`rm -f ${OOKLA_SPEEDTEST}`);
+					return { result: false, error: 'invalid executable file' };
+				}
+			} else
+				return { result: false, error: 'invalid architecture' };
+		}
+	},
+
+	ookla_verify: {
+		call: function() {
+			return { result: ookla_verify() };
+		}
+	},
+
+	speedtest: {
+		call: function() {
+			let command = OOKLA_SPEEDTEST + ' --accept-gdpr --accept-license --progress=no';
+			let exitcode = 0;
+
+			if (!ookla_verify())
+				return { result: false, error: 'executable file does not exist' };
+
+			exitcode = system(`pgrep -f "${command}"`);
+			if (exitcode === 0)
+				return { result: false, error: 'test in progress' };
+
+			let ALL_PROXY;
+			uci.load(CONFIG);
+			if (uci.get(CONFIG, NAMEDDSECTION, 'proxy_enabled') === '1')
+				command = `export ALL_PROXY="${uci.get(CONFIG, NAMEDDSECTION, 'proxy_protocol')}://${uci.get(CONFIG, NAMEDDSECTION, 'proxy_server')}"; ` + command;
+
+			writefile(SPEEDTEST_RESULT, 'Testing');
+
+			let result;
+			const fd = popen(command + " | grep 'www.speedtest.net/result/' | sed -E 's|.+(://www.speedtest.net/\\S+).*|https\\1|;s|(\\.png)\$||'");
+			if (fd) {
+				result = trim(fd.read('all'));
+
+				fd.close();
+			}
+
+			if (result) {
+				writefile(SPEEDTEST_RESULT, result);
+				return { result: result };
+			} else {
+				writefile(SPEEDTEST_RESULT, 'Test failed');
+				return { result: false };
+			}
+		}
+	}
+};
+
+return { 'luci.netspeedtest': methods };

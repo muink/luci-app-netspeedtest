@@ -54,14 +54,14 @@ kill_instance() {
 	return 0
 }
 
-download_ookla() {
+download_ookla() { # Deprecated
 	local url arch=$1
 	[ -z "$arch" ] && return 1
 
 	[ "$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_enabled)" == "1" ] && \
 	export ALL_PROXY=$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_protocol)://$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_server)
 
-	UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36'
+	UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36'
 	url=$( \
 		curl --connect-timeout 10 --retry 3 -sSL 'https://www.speedtest.net/apps/cli' \
 		--user-agent "$UA" \
@@ -80,7 +80,7 @@ download_ookla() {
 	unset ALL_PROXY
 }
 
-ookla_verify() {
+ookla_verify() { # Deprecated
 	if [ -x "$OOKLA_SPEEDTEST" ]; then
 		return 0
 	else
