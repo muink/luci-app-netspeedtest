@@ -61,7 +61,7 @@ return view.extend({
 			result_mtime = res[2] ? res[2].mtime * 1000 : 0,
 			date = new Date();
 
-		var m, s, o;
+		let m, s, o;
 
 		m = new form.Map('netspeedtest', _('Ookla SpeedTest'));
 

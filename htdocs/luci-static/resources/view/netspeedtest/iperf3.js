@@ -10,7 +10,7 @@
 var conf = 'netspeedtest';
 var instance = 'iperf3';
 
-var callServiceList = rpc.declare({
+const callServiceList = rpc.declare({
 	object: 'service',
 	method: 'list',
 	params: ['name'],
@@ -55,7 +55,7 @@ return view.extend({
 	render: function(res) {
 		var isRunning = res[0];
 
-		var m, s, o;
+		let m, s, o;
 
 		m = new form.Map('netspeedtest', _('iperf3 Bandwidth Performance Test'));
 

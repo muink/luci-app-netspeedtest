@@ -10,7 +10,7 @@
 var conf = 'librespeed-go';
 var instance = 'librespeed-go';
 
-var callServiceList = rpc.declare({
+const callServiceList = rpc.declare({
 	object: 'service',
 	method: 'list',
 	params: ['name'],
@@ -55,7 +55,7 @@ return view.extend({
 	render: function(res) {
 		var isRunning = res[0];
 
-		var m, s, o;
+		let m, s, o;
 
 		m = new form.Map('librespeed-go', _('librespeed Config'));
 

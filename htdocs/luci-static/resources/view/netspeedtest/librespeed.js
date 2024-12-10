@@ -22,7 +22,7 @@ return view.extend({
 		var port = uci.get('librespeed-go', 'config', 'listen_port') || '8989',
 			ssl = uci.get('librespeed-go', 'config', 'enable_tls') || '0';
 
-		var m, s, o;
+		let m, s, o;
 
 		m = new form.Map('netspeedtest', _('librespeed Site Speed Test'));
 
