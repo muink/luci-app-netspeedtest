@@ -9,13 +9,13 @@ return view.extend({
 //	handleSave: null,
 //	handleReset: null,
 
-	load: function() {
+	load() {
 	return Promise.all([
 		uci.load('netspeedtest')
 	]);
 	},
 
-	render: function(res) {
+	render(res) {
 		let m, s, o;
 
 		m = new form.Map('netspeedtest', _('OpenSpeedTest'));

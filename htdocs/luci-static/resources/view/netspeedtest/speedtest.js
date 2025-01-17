@@ -15,7 +15,7 @@ return view.extend({
 //	handleSave: null,
 //	handleReset: null,
 
-	load: function() {
+	load() {
 	return Promise.all([
 		L.resolveDefault(fs.stat('/usr/libexec/netspeedtest/speedtest'), {}),
 		L.resolveDefault(fs.read('/var/speedtest_result'), null),
@@ -24,7 +24,7 @@ return view.extend({
 	]);
 	},
 
-	poll_status: function(nodes, res) {
+	poll_status(nodes, res) {
 		var has_ookla = res[0].path,
 			result_content = res[1] ? res[1].trim().split("\n") : [];
 		var ookla_stat = nodes.querySelector('#ookla_status'),
@@ -55,7 +55,7 @@ return view.extend({
 		return;
 	},
 
-	render: function(res) {
+	render(res) {
 		var has_ookla = res[0].path,
 			result_content = res[1] ? res[1].trim().split("\n") : [],
 			result_mtime = res[2] ? res[2].mtime * 1000 : 0,

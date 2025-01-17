@@ -11,14 +11,14 @@ return view.extend({
 //	handleSave: null,
 //	handleReset: null,
 
-	load: function() {
+	load() {
 	return Promise.all([
 		uci.load('netspeedtest'),
 		uci.load('librespeed-go')
 	]);
 	},
 
-	render: function(res) {
+	render(res) {
 		var port = uci.get('librespeed-go', 'config', 'listen_port') || '8989',
 			ssl = uci.get('librespeed-go', 'config', 'enable_tls') || '0';
 
