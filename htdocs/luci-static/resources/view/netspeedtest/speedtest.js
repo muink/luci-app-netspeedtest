@@ -8,7 +8,7 @@
 'require ui';
 'require form';
 
-var TestTimeout = 240 * 1000; // 4 Minutes
+const TestTimeout = 240 * 1000; // 4 Minutes
 
 return view.extend({
 //	handleSaveApply: null,
@@ -25,10 +25,10 @@ return view.extend({
 	},
 
 	poll_status(nodes, res) {
-		var has_ookla = res[0].path,
-			result_content = res[1] ? res[1].trim().split("\n") : [];
-		var ookla_stat = nodes.querySelector('#ookla_status'),
-			result_stat = nodes.querySelector('#speedtest_result');
+		const has_ookla = res[0].path;
+		let result_content = res[1] ? res[1].trim().split("\n") : [];
+		let ookla_stat = nodes.querySelector('#ookla_status');
+		let result_stat = nodes.querySelector('#speedtest_result');
 		if (has_ookla) {
 			ookla_stat.style.color = 'green';
 			dom.content(ookla_stat, [ _('Installed') ]);
@@ -56,10 +56,10 @@ return view.extend({
 	},
 
 	render(res) {
-		var has_ookla = res[0].path,
-			result_content = res[1] ? res[1].trim().split("\n") : [],
-			result_mtime = res[2] ? res[2].mtime * 1000 : 0,
-			date = new Date();
+		const has_ookla = res[0].path;
+		const result_content = res[1] ? res[1].trim().split("\n") : [];
+		const result_mtime = res[2] ? res[2].mtime * 1000 : 0;
+		const date = new Date();
 
 		let m, s, o;
 
@@ -98,15 +98,15 @@ return view.extend({
 		if (result_content.length && result_content[0] == 'Testing' && (date.getTime() - result_mtime) < TestTimeout)
 			o.readonly = true;
 		o.onclick = L.bind(function(ev, section_id) {
-			var ookla_official=uci.get('netspeedtest', section_id, 'ookla_official') || '0'
+			const ookla_official=uci.get('netspeedtest', section_id, 'ookla_official') || '0'
 			if (ookla_official === '1') {
 				return fs.exec('/usr/lib/netspeedtest/speedtest')
-					.then(function(res) { return window.location = window.location.href.split('#')[0] })
-					.catch(function(e) { ui.addNotification(null, E('p', e.message), 'error') });
+					.then((res) => { return window.location = window.location.href.split('#')[0] })
+					.catch((e) => { ui.addNotification(null, E('p', e.message), 'error') });
 			} else {
 				return fs.exec_direct('/usr/lib/netspeedtest/speedtest')
-					.then(function(res) { return window.location = window.location.href.split('#')[0] })
-					.catch(function(e) { ui.addNotification(null, E('p', e.message), 'error') });
+					.then((res) => { return window.location = window.location.href.split('#')[0] })
+					.catch((e) => { ui.addNotification(null, E('p', e.message), 'error') });
 			}
 		}, o);
 
@@ -172,10 +172,10 @@ return view.extend({
 		o.inputstyle = 'apply';
 		o.depends('ookla_official', '1');
 		o.onclick = function(ev, section_id) {
-			var arch=this.section.getOption('_arch').formvalue(section_id);
+			const arch=this.section.getOption('_arch').formvalue(section_id);
 			//alert(arch);
 			return fs.exec_direct('/etc/init.d/netspeedtest', ['download_ookla', arch])
-				.catch(function(e) { ui.addNotification(null, E('p', e.message), 'error') });
+				.catch((e) => { ui.addNotification(null, E('p', e.message), 'error') });
 		}
 
 		return m.render()

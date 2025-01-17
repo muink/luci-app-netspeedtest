@@ -19,8 +19,8 @@ return view.extend({
 	},
 
 	render(res) {
-		var port = uci.get('librespeed-go', 'config', 'listen_port') || '8989',
-			ssl = uci.get('librespeed-go', 'config', 'enable_tls') || '0';
+		const port = uci.get('librespeed-go', 'config', 'listen_port') || '8989';
+		const ssl = uci.get('librespeed-go', 'config', 'enable_tls') || '0';
 
 		let m, s, o;
 
