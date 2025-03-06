@@ -2,10 +2,10 @@
 
 ### Screenshots
 
-![iperf3](.img/iperf3.png "iperf3")  
-![librespeed](.img/librespeed.png "librespeed")  
-![librespeed_config](.img/librespeed_config.png "librespeed_config")  
-![speedtest](.img/speedtest.png "speedtest")  
+![iperf3](.img/iperf3.png "iperf3")\
+![librespeed](.img/librespeed.png "librespeed")\
+![librespeed_config](.img/librespeed_config.png "librespeed_config")\
+![speedtest](.img/speedtest.png "speedtest")
 
 ### How to install
 
