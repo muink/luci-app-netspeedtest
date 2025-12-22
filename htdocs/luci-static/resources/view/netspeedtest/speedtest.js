@@ -114,7 +114,8 @@ return view.extend({
 
 			return fs.exec_direct('ubus', [ 'call', 'luci.netspeedtest', 'speedtest' ]).then((res) => {});
 			/* return callSpeedtest().then((res) => {
-				return window.location = window.location.href.split('#')[0];
+				if (!res.result)
+					ui.addNotification(null, E('p', _('Test failed: %s').format(res.error)), 'error');
 			}); */
 		};
 
