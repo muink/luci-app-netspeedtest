@@ -91,7 +91,7 @@ return view.extend({
 				else if (result_content[0].match(/https?:\S+/))
 					El.appendChild(TestS);
 				else if (result_content[0] == 'Test failed')
-					appendChild(TestF);
+					El.appendChild(TestF);
 			} else
 				El.appendChild(TestN);
 
