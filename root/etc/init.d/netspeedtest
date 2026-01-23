@@ -1,117 +1,77 @@
 #!/bin/sh /etc/rc.common
-# Copyright (C) 2023 muink
-#
+# Copyright (C) 2021-2025 sirpdboy
 
 . "${IPKG_INSTROOT}/lib/functions.sh"
 
 START=99
 USE_PROCD=1
 
-EXTRA_COMMANDS="download_ookla ookla_verify"
+EXTRA_COMMANDS="download verify"
 EXTRA_HELP=\
-"	download_ookla	Download Ookla Speedtest-CLI
-	ookla_verify	Verify Ookla Speedtest-CLI integrity"
+"	download	Download Ookla Speedtest-CLI
+	verify	Verify Ookla Speedtest-CLI integrity"
 
-#
-OOKLA_SPEEDTEST='/usr/libexec/netspeedtest/speedtest'
-# uci
-CONFIG_NAME='netspeedtest'
-NAMEDDSECTION='config'
+OOKLA_SPEEDTEST='/usr/bin/speedtest'
+CONFIG='netspeedtest'
+log='/tmp/netspeedtest.log'
 
+download() {
+    . /etc/openwrt_release
+    local url arch=$1
+    local proxy=$2 
+    [ -z "$arch" ] && arch=$DISTRIB_ARCH
+    [ -z "$proxy" ] && proxy='0'
 
+    [ "$proxy" == "1" ] && export ALL_PROXY="http://192.168.10.8:1080"
 
-iperf3_instance() {
-	procd_open_instance "iperf3"
-	procd_set_param command "iperf3"
-	procd_append_param command -s
-	procd_set_param respawn
-	procd_set_param user nobody
-	procd_set_param stdout 1
-	procd_set_param stderr 1
-	procd_close_instance
+    UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36'
+    url=$( \
+        curl --connect-timeout 10 --retry 3 -sSL 'https://www.speedtest.net/apps/cli' \
+        --user-agent "$UA" \
+        | grep "Download for Linux" \
+        | sed 's|<|\n<|g' \
+        | sed -n '/Download for Linux/,/<\/div>/p' \
+        | sed -En "s|.*<a href=\"([^\"]+)\">${arch}|\1|p" \
+    )
+    [ -z "$url" ] && { echo "Failed to get download URL" >> "$log"; return 1; }
+
+    # Backup existing file
+    [ -f "$OOKLA_SPEEDTEST" ] && mv "$OOKLA_SPEEDTEST" "${OOKLA_SPEEDTEST}.bak"
+
+    if curl -sSL "$url" --user-agent "$UA" | tar -xvz -C /tmp; then
+        mkdir -p "${OOKLA_SPEEDTEST%/*}" 2>/dev/null
+        cp -f /tmp/speedtest "$OOKLA_SPEEDTEST"
+        rm -rf /tmp/speedtest
+        chmod 755 "$OOKLA_SPEEDTEST"
+        
+        if verify; then
+            echo "Download successful: $($OOKLA_SPEEDTEST --version | awk '/Speedtest/{print $1" ver:"$4}')" >> "$log"
+        else
+            echo "Download failed: binary verification failed" >> "$log"
+            [ -f "${OOKLA_SPEEDTEST}.bak" ] && mv "${OOKLA_SPEEDTEST}.bak" "$OOKLA_SPEEDTEST"
+            return 1
+        fi
+    else
+        echo "Download failed: could not retrieve package" >> "$log"
+        [ -f "${OOKLA_SPEEDTEST}.bak" ] && mv "${OOKLA_SPEEDTEST}.bak" "$OOKLA_SPEEDTEST"
+        return 1
+    fi
+    
+    unset ALL_PROXY
 }
 
-librespeed_instance() {
-	local action="$1"
-
-	case "$action" in
-		start)
-			uci set librespeed-go.config.enabled='1'
-			uci commit librespeed-go
-			/etc/init.d/librespeed-go reload
-		;;
-		stop)
-			uci set librespeed-go.config.enabled='0'
-			uci commit librespeed-go
-			/etc/init.d/librespeed-go reload
-		;;
-	esac
+verify() {
+    [ -x "$OOKLA_SPEEDTEST" ] && "$OOKLA_SPEEDTEST" --version >/dev/null 2>&1
 }
 
-kill_instance() {
-	local instance="$1"
-	pgrep -f "$instance" | xargs kill -9 >/dev/null 2>&1
-	return 0
+start() {
+    if ! verify; then
+        download || {
+            echo "Critical: Failed to install Speedtest CLI" >> "$log"
+            exit 1
+        }
+    fi
 }
-
-download_ookla() {
-	local url arch=$1
-	[ -z "$arch" ] && return 1
-
-	[ "$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_enabled)" == "1" ] && \
-	export ALL_PROXY=$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_protocol)://$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_server)
-
-	UA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36'
-	url=$( \
-		curl --connect-timeout 10 --retry 3 -sSL 'https://www.speedtest.net/apps/cli' \
-		--user-agent "$UA" \
-		| grep "Download for Linux" \
-		| sed 's|<|\n<|g' \
-		| sed -n '/Download for Linux/,/<\/div>/p' \
-		| sed -En "s|.*<a href=\"([^\"]+)\">${arch}|\1|p" \
-	)
-	[ -z "$url" ] && return 1
-
-	[ -n "$url" ] && curl -sSL $url --user-agent "$UA" | tar -xvz -C /tmp
-	mkdir -p ${OOKLA_SPEEDTEST%/*} 2>/dev/null
-	cp -f /tmp/speedtest $OOKLA_SPEEDTEST
-	chmod 755 $OOKLA_SPEEDTEST
-	ookla_verify || rm -f $OOKLA_SPEEDTEST
-	unset ALL_PROXY
-}
-
-ookla_verify() {
-	if [ -x "$OOKLA_SPEEDTEST" ]; then
-		return 0
-	else
-		return 1
-	fi
-}
-
-start_service() {
-	local eniperf3 enlibrespeed
-
-	config_load "$CONFIG_NAME"
-	eval "eniperf3=\$CONFIG_${NAMEDDSECTION}_iperf3_enabled"
-	eval "enlibrespeed=\$CONFIG_${NAMEDDSECTION}_librespeed_enabled"
-
-	[ "$eniperf3" == "1" ] && iperf3_instance
-	[ "${enlibrespeed:=0}" == "0" ] && librespeed_instance stop || librespeed_instance start
-}
-
-service_triggers() {
-	procd_add_reload_trigger "$CONFIG_NAME" 'librespeed-go' 'network'
-}
-
-stop_service() {
-	uci -q batch <<-EOF
-		set $CONFIG_NAME.$NAMEDDSECTION.iperf3_enabled='0'
-		set $CONFIG_NAME.$NAMEDDSECTION.librespeed_enabled='0'
-		commit $CONFIG_NAME
-	EOF
-	librespeed_instance stop
-}
-
 restart() {
-	start
+    start
 }

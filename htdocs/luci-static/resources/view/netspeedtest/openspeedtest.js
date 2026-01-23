@@ -1,3 +1,4 @@
+/*   Copyright (C) 2021-2025 sirpdboy herboy2008@gmail.com https://github.com/sirpdboy/luci-app-netspeedtest */
 'use strict';
 'require view';
 'require uci';
@@ -5,9 +6,6 @@
 'require form';
 
 return view.extend({
-//	handleSaveApply: null,
-//	handleSave: null,
-//	handleReset: null,
 
 	load() {
 	return Promise.all([
@@ -25,10 +23,16 @@ return view.extend({
 		s.render = function (section_id) {
 			return E('iframe', {
 				src: '//openspeedtest.com/speedtest',
-				style: 'border:none;width:100%;height:100%;min-height:360px;border:none;overflow:hidden !important;'
+				style: 'width:100%;height:100%;min-height:360px;border:none;overflow:hidden !important;'
 			});
 		};
 
 		return m.render();
 	}
+
+
+
+    // handleSaveApply: null,
+   //  handleSave: null,
+    // handleReset: null
 });
