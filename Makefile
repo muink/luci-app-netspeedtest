@@ -1,31 +1,32 @@
-# SPDX-License-Identifier: MIT
+# SPDX-License-Identifier: GPL-3.0-only
 #
-# Copyright (C) 2023-2025 muink <https://github.com/muink>
+# Copyright (C) 2021-2025  sirpdboy  <herboy2008@gmail.com> 
+# https://github.com/sirpdboy/luci-app-ddns-go 
+# This is free software, licensed under the Apache License, Version 2.0 .
+#
 
 include $(TOPDIR)/rules.mk
 
-LUCI_NAME:=luci-app-netspeedtest
+PKG_NAME:=luci-app-netspeedtest
 
-LUCI_TITLE:=LuCI Net Speedtest
-LUCI_DEPENDS:=+iperf3 +librespeed-go +python3-speedtest-cli +ca-certificates
+PKG_VERSION:=5.0.1
+PKG_RELEASE:=20250512
 
-LUCI_DESCRIPTION:=Test Net speed
+LUCI_TITLE:=LuCI Support for netspeedtest
+LUCI_DEPENDS:=+speedtest-cli +homebox +iperf3-ssl
+LUCI_PKGARCH:=all
+PKG_MAINTAINER:=sirpdboy  <herboy2008@gmail.com>
 
-PKG_MAINTAINER:=Anya Lin <hukk1996@gmail.com>
-PKG_LICENSE:=MIT
 
-PKG_UNPACK=$(CURDIR)/.prepare.sh $(PKG_NAME) $(CURDIR) $(PKG_BUILD_DIR)
-
-define Package/$(LUCI_NAME)/conffiles
+define Package/$(PKG_NAME)/conffiles
 /etc/config/netspeedtest
 endef
 
-define Package/$(LUCI_NAME)/postinst
+define Package/$(PKG_NAME)/postinst
 endef
 
-define Package/$(LUCI_NAME)/prerm
-endef
 
 include $(TOPDIR)/feeds/luci/luci.mk
+
 
 # call BuildPackage - OpenWrt buildroot signature

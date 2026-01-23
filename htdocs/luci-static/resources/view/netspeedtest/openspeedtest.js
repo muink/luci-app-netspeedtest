@@ -5,9 +5,6 @@
 'require form';
 
 return view.extend({
-//	handleSaveApply: null,
-//	handleSave: null,
-//	handleReset: null,
 
 	load() {
 	return Promise.all([
@@ -31,4 +28,10 @@ return view.extend({
 
 		return m.render();
 	}
+
+
+
+    // handleSaveApply: null,
+   //  handleSave: null,
+    // handleReset: null
 });

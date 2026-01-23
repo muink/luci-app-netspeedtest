@@ -5,15 +5,15 @@
       "file": {
         "/etc/init.d/netspeedtest": [ "exec" ],
         "/usr/lib/netspeedtest/speedtest": [ "exec" ],
-        "/var/speedtest_result": [ "read" ]
+        "/tmp/speedtest_result": [ "read" ]
       },
       "ubus": {
         "service": [ "list" ]
       },
-      "uci": [ "netspeedtest", "librespeed-go" ]
+      "uci": [ "netspeedtest" ]
     },
     "write": {
-      "uci": [ "netspeedtest", "librespeed-go" ]
+      "uci": [ "netspeedtest" ]
     }
   }
 }

@@ -1,30 +1,37 @@
-#!/bin/sh
-# Copyright (C) 2023 muink
-#
-OOKLA_SPEEDTEST='/usr/libexec/netspeedtest/speedtest'
-SPEEDTEST_RESULT='/var/speedtest_result'
-INIT_SCRIPT='/etc/init.d/netspeedtest'
-# uci
-CONFIG_NAME='netspeedtest'
-NAMEDDSECTION='config'
+#!/bin/bash
+mkdir -p /etc/speedtest
+export HOME='/etc/speedtest'
+SPEEDTEST_CLI='/usr/bin/speedtest'
+SPEEDTEST_RESULT='/tmp/speedtest_result'
 
+[ -n "$(pgrep -f "$SPEEDTEST_CLI")" ] && exit 1
 
-command="speedtest --share"
-if [ "$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.ookla_official)" == "1" ]; then
-	$INIT_SCRIPT ookla_verify
-	if [ "$?" == "0" ]; then
-		command="$OOKLA_SPEEDTEST --accept-gdpr --accept-license --progress=no"
-	else
-		uci set $CONFIG_NAME.$NAMEDDSECTION.ookla_official=0
-		uci commit $CONFIG_NAME
+echo "Start Testing" > "$SPEEDTEST_RESULT"
+LOCAL_IP=$(curl -s -4 --connect-timeout 3 http://ip.3322.net)
+
+BAIDU_SK="LHHGlmhcb4ENvIXpR9QQ2tBYa6ooUowX hYCENCEx1nXO0Nt46ldexfG9oI49xBGh 0kKZnWWhXEPfzIkklmzAa3dZ"
+if [ -n "$LOCAL_IP" ]; then
+	for SK in $BAIDU_SK
+	do
+		INFO=$(curl -sk --connect-timeout 3 "https://api.map.baidu.com/location/ip?ip="$LOCAL_IP"&coor=bd09ll&ak=$SK")
+		if [ "$(echo $INFO | jsonfilter -e "@['status']")" = 0 ]; then
+			status=0
+			break
+		fi
+	done
+	if [ "$status" = 0 ]; then
+		lon=$(echo $INFO | jsonfilter -e "@['content']['point']['x']")
+		lat=$(echo $INFO | jsonfilter -e "@['content']['point']['y']")
+		server_id=$(curl -sk --connect-timeout 3 "https://www.speedtest.net/api/ios-config.php?lon=$lon&lat=$lat" | grep "server url" | head -n1 | sed 's/.*id="//;s/".*//')
+		[ -n "$server_id" ] && ARG="-s $server_id"
 	fi
 fi
 
-[ -n "$(pgrep -f "$command")" ] && return 1
+RUNTEST=$($SPEEDTEST_CLI --accept-gdpr --accept-license --progress=no $ARG 2>&1)
+if [ $(echo $RUNTEST | grep -c "No servers defined") -ge 1 ] || [ $(echo $RUNTEST | grep -c "error") -ge 1 ]; then
+	RUNTEST=$($SPEEDTEST_CLI --accept-gdpr --accept-license --progress=no 2>&1)
+fi
 
-[ "$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_enabled)" == "1" ] && \
-export ALL_PROXY=$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_protocol)://$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_server)
+RESULT=$(echo "$RUNTEST" | grep "Result URL" | awk '{print $NF}')
 
-echo "Testing" > "$SPEEDTEST_RESULT"
-result=$($command | grep 'www.speedtest.net/result/' | sed -E 's|.+(://www.speedtest.net/\S+).*|https\1|;s|(\.png)$||')
-[ -n "$result" ] && echo "$result" > "$SPEEDTEST_RESULT" || echo "Test failed" > "$SPEEDTEST_RESULT"
+[ -n "$RESULT" ] && echo "$RESULT" > "$SPEEDTEST_RESULT" || echo "Test failed" > "$SPEEDTEST_RESULT"
