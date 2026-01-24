@@ -65,6 +65,7 @@ return view.extend({
 					E('img', { 'src': result_content[0] + '.png', 'style': 'max-width:100%;max-height:100%;vertical-align:middle' }, [])
 				])
 			]);
+			const NoSer = E('span', { 'style': 'color:red;font-weight:bold' }, [ _('No available servers.') ]);
 			const TestF = E('span', { 'style': 'color:red;font-weight:bold' }, [ _('Test failed.') ]);
 			const TestN = E('span', { 'style': 'color:red;font-weight:bold;display:none' }, [ _('No result.') ]);
 
@@ -78,6 +79,8 @@ return view.extend({
 							dom.content(result_stat, [ Testing ]);
 						else if (result_content[0].match(/https?:\S+/))
 							dom.content(result_stat, [ TestS ]);
+						else if (result_content[0] == 'No available servers')
+							dom.content(result_stat, [ NoSer ]);
 						else if (result_content[0] == 'Test failed')
 							dom.content(result_stat, [ TestF ]);
 					} else
@@ -90,6 +93,8 @@ return view.extend({
 					El.appendChild(Testing);
 				else if (result_content[0].match(/https?:\S+/))
 					El.appendChild(TestS);
+				else if (result_content[0] == 'No available servers')
+					El.appendChild(NoSer);
 				else if (result_content[0] == 'Test failed')
 					El.appendChild(TestF);
 			} else
@@ -112,11 +117,10 @@ return view.extend({
 				window.location = window.location.href.split('#')[0];
 			}, L.env.apply_display * 500);
 
-			return fs.exec_direct('ubus', [ 'call', 'luci.netspeedtest', 'speedtest' ]).then((res) => {});
-			/* return callSpeedtest().then((res) => {
+			return callSpeedtest().then((res) => {
 				if (!res.result)
 					ui.addNotification(null, E('p', _('Test failed: %s').format(res.error)), 'error');
-			}); */
+			});
 		};
 
 		o = s.option(form.DummyValue, '_ookla_status', _('Ookla® SpeedTest-CLI Status'));
