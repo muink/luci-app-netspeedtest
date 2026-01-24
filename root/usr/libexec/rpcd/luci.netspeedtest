@@ -117,10 +117,7 @@ case "$1" in
 				export ALL_PROXY=$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_protocol)://$(uci -q get $CONFIG_NAME.$NAMEDDSECTION.proxy_server)
 
 				serverList="$(curl --connect-timeout 10 --retry 3 -sSL "$speedTestServersUrl")"
-
-				if [ -n "$serverList" ]; then
-					command=" --server-id=$(echo "$serverList" | jsonfilter -e '@[0].id')"
-				else
+				if [ -z "$serverList" ]; then
 					echo "No available servers" > "$SPEEDTEST_RESULT"
 					json_init
 					json_add_boolean "result" 0
@@ -129,7 +126,7 @@ case "$1" in
 					exit
 				fi
 
-				speedtest &
+				speedtest --server-id=$(echo "$serverList" | jsonfilter -e '@[0].id') &
 				json_init
 				json_add_boolean "result" 1
 				json_dump
