@@ -60,11 +60,13 @@ return view.extend({
 			const Testing = E('span', { 'class': 'spinning', 'style': 'color:yellow;font-weight:bold' }, [
 				_('Testing in progress...')
 			]);
-			const TestS = E('div', { 'style': 'max-width:500px' }, [
-				E('a', { 'href': result_content[0], 'target': '_blank' }, [
-					E('img', { 'src': result_content[0] + '.png', 'style': 'max-width:100%;max-height:100%;vertical-align:middle' }, [])
+			const TestS = function(content) {
+				return E('div', { 'style': 'max-width:500px' }, [
+					E('a', { 'href': content, 'target': '_blank' }, [
+						E('img', { 'src': content + '.png', 'style': 'max-width:100%;max-height:100%;	vertical-align:middle' }, [])
+					])
 				])
-			]);
+			}
 			const NoSer = E('span', { 'style': 'color:red;font-weight:bold' }, [ _('No available servers.') ]);
 			const TestF = E('span', { 'style': 'color:red;font-weight:bold' }, [ _('Test failed.') ]);
 			const TestN = E('span', { 'style': 'color:red;font-weight:bold;display:none' }, [ _('No result.') ]);
@@ -78,7 +80,7 @@ return view.extend({
 						if (result_content[0] == 'Testing')
 							dom.content(result_stat, [ Testing ]);
 						else if (result_content[0].match(/https?:\S+/))
-							dom.content(result_stat, [ TestS ]);
+							dom.content(result_stat, [ TestS(result_content[0]) ]);
 						else if (result_content[0] == 'No available servers')
 							dom.content(result_stat, [ NoSer ]);
 						else if (result_content[0] == 'Test failed')
@@ -92,7 +94,7 @@ return view.extend({
 				if (result_content[0] == 'Testing')
 					El.appendChild(Testing);
 				else if (result_content[0].match(/https?:\S+/))
-					El.appendChild(TestS);
+					El.appendChild(TestS(result_content[0]));
 				else if (result_content[0] == 'No available servers')
 					El.appendChild(NoSer);
 				else if (result_content[0] == 'Test failed')
