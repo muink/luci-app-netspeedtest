@@ -4,8 +4,8 @@
     "read": {
       "file": {
         "/etc/init.d/netspeedtest": [ "exec" ],
-        "/var/speedtest_result": [ "read" ],
-        "ubus call luci.netspeedtest speedtest": [ "exec" ]
+        "/usr/lib/netspeedtest/speedtest": [ "exec" ],
+        "/var/speedtest_result": [ "read" ]
       },
       "ubus": {
         "service": [ "list" ],
