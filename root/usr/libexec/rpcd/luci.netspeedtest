@@ -23,7 +23,7 @@ ookla_verify() {
 	return $?
 }
 
-# func [args]...
+# func [args...]
 speedtest() {
 	echo "Testing" > "$SPEEDTEST_RESULT"
 	result=$($OOKLA_SPEEDTEST --accept-gdpr --accept-license --progress=no "$@" | grep 'Result URL' | awk '{print $NF}')
