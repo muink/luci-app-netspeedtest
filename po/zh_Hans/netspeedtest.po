@@ -12,156 +12,199 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 4.12.1-dev\n"
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/iperf3.js:66
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:66
+#: htdocs/luci-static/resources/view/netspeedtest/webspeedtest.js:11
+msgid "Bilibili hdslb"
+msgstr ""
+
+#: root/usr/share/luci/menu.d/luci-app-netspeedtest.json:46
+msgid "Client SpeedTest"
+msgstr "客户端测速"
+
+#: htdocs/luci-static/resources/view/netspeedtest/iperf3.js:66
+#: htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:66
 msgid "Collecting data ..."
 msgstr "正在收集数据..."
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:156
+#: htdocs/luci-static/resources/view/netspeedtest/speedtest.js:177
 msgid "Download"
 msgstr "下载"
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:155
+#: htdocs/luci-static/resources/view/netspeedtest/speedtest.js:176
 msgid "Download Ookla® SpeedTest-CLI"
 msgstr "下载 Ookla® SpeedTest-CLI"
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/iperf3.js:77
+#: htdocs/luci-static/resources/view/netspeedtest/speedtest.js:186
+msgid "Download failed: %s"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/netspeedtest/iperf3.js:77
 msgid "Download iperf3 client"
 msgstr "下载 iperf3 客户端"
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/iperf3.js:73
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/librespeed.js:32
+#: htdocs/luci-static/resources/view/netspeedtest/iperf3.js:73
+#: htdocs/luci-static/resources/view/netspeedtest/librespeed.js:32
 msgid "Enable"
 msgstr "启用"
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:77
+#: htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:78
 msgid "Enable HTTP2"
 msgstr "启用 HTTP2"
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:81
+#: htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:82
 msgid "Enable TLS"
 msgstr "启用 TLS"
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:121
+#: htdocs/luci-static/resources/view/netspeedtest/speedtest.js:148
 msgid "Enable proxy for downloader and test"
 msgstr "为下载器和测试启用代理"
 
-#: applications/luci-app-netspeedtest/root/usr/share/rpcd/acl.d/luci-app-netspeedtest.json:3
+#: root/usr/share/rpcd/acl.d/luci-app-netspeedtest.json:3
 msgid "Grant access to netspeedtest procedures"
 msgstr "授予访问 LuCI 应用 netspeedtest 的权限"
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:31
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:102
+#: htdocs/luci-static/resources/view/netspeedtest/speedtest.js:134
+#: htdocs/luci-static/resources/view/netspeedtest/speedtest.js:143
 msgid "Installed"
 msgstr "已安装"
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:73
+#: htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:73
 msgid "Listen Port"
 msgstr "监听端口"
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:50
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:82
+#: htdocs/luci-static/resources/view/netspeedtest/webspeedtest.js:12
+msgid "Netflix Fast"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/netspeedtest/speedtest.js:70
+msgid "No available servers."
+msgstr ""
+
+#: htdocs/luci-static/resources/view/netspeedtest/speedtest.js:72
 msgid "No result."
 msgstr "无结果."
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:34
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:104
+#: htdocs/luci-static/resources/view/netspeedtest/speedtest.js:134
+#: htdocs/luci-static/resources/view/netspeedtest/speedtest.js:143
 msgid "Not Installed"
 msgstr "未安装"
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/iperf3.js:78
+#: htdocs/luci-static/resources/view/netspeedtest/iperf3.js:78
 msgid "Official website"
 msgstr "官方网站"
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:61
-#: applications/luci-app-netspeedtest/root/usr/share/luci/menu.d/luci-app-netspeedtest.json:38
+#: htdocs/luci-static/resources/view/netspeedtest/speedtest.js:54
 msgid "Ookla SpeedTest"
 msgstr ""
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:98
+#: htdocs/luci-static/resources/view/netspeedtest/speedtest.js:128
 msgid "Ookla® SpeedTest-CLI Status"
 msgstr "Ookla® SpeedTest-CLI 状态"
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:124
+#: htdocs/luci-static/resources/view/netspeedtest/webspeedtest.js:8
+msgid "OpenSpeedTest"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/netspeedtest/speedtest.js:151
 msgid "Proxy Protocol"
 msgstr "代理协议"
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:134
+#: htdocs/luci-static/resources/view/netspeedtest/speedtest.js:161
 msgid "Proxy Server"
 msgstr "代理服务器"
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/librespeed.js:41
+#: htdocs/luci-static/resources/view/netspeedtest/librespeed.js:41
 msgid ""
 "Random port (port=0) is not supported.<br />Change to a fixed port and try "
 "again."
 msgstr "不支持随机端口 (port=0).<br />改为固定端口然后再试一次."
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/iperf3.js:50
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:50
+#: root/usr/share/luci/menu.d/luci-app-netspeedtest.json:38
+msgid "Router SpeedTest"
+msgstr "路由端测速"
+
+#: htdocs/luci-static/resources/view/netspeedtest/iperf3.js:50
+#: htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:50
 msgid "SERVER NOT RUNNING"
 msgstr "服务器未运行"
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/iperf3.js:48
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:48
+#: htdocs/luci-static/resources/view/netspeedtest/iperf3.js:48
+#: htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:48
 msgid "SERVER RUNNING"
 msgstr "服务器运行中"
 
-#: applications/luci-app-netspeedtest/root/usr/share/luci/menu.d/luci-app-netspeedtest.json:3
+#: htdocs/luci-static/resources/view/netspeedtest/webspeedtest.js:35
+msgid "Service list"
+msgstr "服务列表"
+
+#: root/usr/share/luci/menu.d/luci-app-netspeedtest.json:3
 msgid "SpeedTest"
 msgstr "网速测试"
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:89
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:90
+#: htdocs/luci-static/resources/view/netspeedtest/speedtest.js:111
+#: htdocs/luci-static/resources/view/netspeedtest/speedtest.js:112
 msgid "Start Test"
 msgstr "启动测试"
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:145
+#: htdocs/luci-static/resources/view/netspeedtest/speedtest.js:184
+msgid "Successfully download."
+msgstr ""
+
+#: htdocs/luci-static/resources/view/netspeedtest/speedtest.js:167
 msgid "System Arch"
 msgstr "系统架构"
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:87
+#: htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:88
 msgid "TLS Cert file"
 msgstr "TLS 证书文件"
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:92
+#: htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:94
 msgid "TLS Key file"
 msgstr "TLS 密钥文件"
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:47
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:79
+#: htdocs/luci-static/resources/view/netspeedtest/speedtest.js:71
 msgid "Test failed."
 msgstr "测试失败."
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:40
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:70
+#: htdocs/luci-static/resources/view/netspeedtest/speedtest.js:124
+msgid "Test failed: %s"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/netspeedtest/speedtest.js:61
 msgid "Testing in progress..."
 msgstr "测试进行中..."
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/speedtest.js:141
-msgid "Use Ookla® SpeedTest-CLI"
-msgstr "使用 Ookla® SpeedTest-CLI"
+#: htdocs/luci-static/resources/view/netspeedtest/webspeedtest.js:13
+msgid "USTC EDU SpeedTest"
+msgstr ""
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/iperf3.js:60
+#: htdocs/luci-static/resources/view/netspeedtest/webspeedtest.js:30
+msgid "Web SpeedTest"
+msgstr "网页测速"
+
+#: htdocs/luci-static/resources/view/netspeedtest/iperf3.js:60
 msgid "iperf3 Bandwidth Performance Test"
 msgstr "iperf3 带宽性能测试"
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/iperf3.js:88
+#: htdocs/luci-static/resources/view/netspeedtest/iperf3.js:88
 msgid "iperf3 Common commands reference"
 msgstr "iperf3 常用命令参考"
 
-#: applications/luci-app-netspeedtest/root/usr/share/luci/menu.d/luci-app-netspeedtest.json:14
+#: root/usr/share/luci/menu.d/luci-app-netspeedtest.json:14
 msgid "iperf3 Server"
 msgstr "iperf3 服务器"
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:60
-#: applications/luci-app-netspeedtest/root/usr/share/luci/menu.d/luci-app-netspeedtest.json:30
+#: htdocs/luci-static/resources/view/netspeedtest/librespeed-cfg.js:60
+#: root/usr/share/luci/menu.d/luci-app-netspeedtest.json:30
 msgid "librespeed Config"
 msgstr "librespeed 配置"
 
-#: applications/luci-app-netspeedtest/root/usr/share/luci/menu.d/luci-app-netspeedtest.json:22
+#: root/usr/share/luci/menu.d/luci-app-netspeedtest.json:22
 msgid "librespeed Server"
 msgstr "librespeed 服务器"
 
-#: applications/luci-app-netspeedtest/htdocs/luci-static/resources/view/netspeedtest/librespeed.js:27
+#: htdocs/luci-static/resources/view/netspeedtest/librespeed.js:27
 msgid "librespeed Site Speed Test"
-msgstr "librespeed 站点速度测试"
+msgstr "librespeed 站点测速试"
+
+#~ msgid "Use Ookla® SpeedTest-CLI"
+#~ msgstr "使用 Ookla® SpeedTest-CLI"
