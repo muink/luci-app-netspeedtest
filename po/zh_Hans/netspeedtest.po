@@ -204,7 +204,7 @@ msgstr "librespeed 服务器"
 
 #: htdocs/luci-static/resources/view/netspeedtest/librespeed.js:27
 msgid "librespeed Site Speed Test"
-msgstr "librespeed 站点测速试"
+msgstr "librespeed 站点测速"
 
 #~ msgid "Use Ookla® SpeedTest-CLI"
 #~ msgstr "使用 Ookla® SpeedTest-CLI"
